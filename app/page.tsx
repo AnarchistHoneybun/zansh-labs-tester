@@ -7,7 +7,7 @@ import GeneralDetails from '@/components/GeneralDetails';
 import EditApplicationQuestions from '@/components/EditApplicationQuestions';
 
 const DashboardPage = () => {
-  const [activeSection, setActiveSection] = useState('general');
+  const [activeSection, setActiveSection] = useState('questions');
 
   return (
     <div className="px-8 py-6">
