@@ -29,9 +29,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ id, number, title, type, on
 
     return (
         <div ref={setNodeRef} style={style} className="bg-[#f9fafb] p-4 rounded-lg shadow-sm flex items-start space-x-4">
+            <div className="flex-shrink-0 w-6 text-right">
+                <span className="font-semibold leading-6">{number}.</span>
+            </div>
             <div className="flex-grow">
-                <h3 className="text-lg font-semibold">{number}. {title}</h3>
-                <p className="text-sm text-gray-500">{type}</p>
+                <p className="text-lg font-semibold leading-6 mt-0">{title}</p>
+                <p className="text-sm text-gray-500 font-medium mt-1">{type}</p>
             </div>
             <div className="flex-shrink-0 flex items-center space-x-2">
                 <Button variant="outline" size="sm" onClick={onEdit} className="h-8">
@@ -41,7 +44,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ id, number, title, type, on
                     <Trash2 className="h-4 w-4 text-[#9b2929] font-semibold" />
                 </Button>
                 <div className="flex-shrink-0" {...attributes} {...listeners}>
-                    <GripVertical className="text-foreground cursor-move" />
+                    <GripVertical className="text-foreground cursor-grab" />
                 </div>
             </div>
         </div>
