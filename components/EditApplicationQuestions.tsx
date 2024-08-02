@@ -76,7 +76,7 @@ const EditApplicationQuestions: React.FC = () => {
         {questions.length === 0 ? (
             <div className="text-center py-20">
               <StarIcon />
-              <h2 className="text-2xl font-semibold mb-2">Let's add some questions to your applications</h2>
+              <h2 className="text-2xl font-semibold mb-2">Let&apos;s add some questions to your applications</h2>
               <p className="text-gray-600 mb-4">Click the button below to get your survey up and running.</p>
               <Button onClick={() => setIsAddModalOpen(true)}>Add a question</Button>
             </div>
