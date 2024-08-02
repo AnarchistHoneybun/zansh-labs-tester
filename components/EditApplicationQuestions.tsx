@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import QuestionCard from './QuestionCard';
 import AddQuestionModal from './AddQuestionModal';
+import EditQuestionModal from './EditQuestionModal';
 import StarIcon from './StarIcon';
 import {
   DndContext,
@@ -32,7 +33,9 @@ interface Question {
 
 const EditApplicationQuestions: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
   const sensors = useSensors(
       useSensor(PointerSensor),
@@ -45,8 +48,10 @@ const EditApplicationQuestions: React.FC = () => {
     setQuestions([...questions, { id: Date.now(), ...newQuestion }]);
   };
 
-  const handleEditQuestion = (id: number) => {
-    // Implement edit functionality
+  const handleEditQuestion = (editedQuestion: Question) => {
+    setQuestions(questions.map(q => q.id === editedQuestion.id ? editedQuestion : q));
+    setIsEditModalOpen(false);
+    setEditingQuestion(null);
   };
 
   const handleDeleteQuestion = (id: number) => {
@@ -71,9 +76,9 @@ const EditApplicationQuestions: React.FC = () => {
         {questions.length === 0 ? (
             <div className="text-center py-20">
               <StarIcon />
-              <h2 className="text-2xl font-semibold mb-2">Let&apos;s add some questions to your applications</h2>
+              <h2 className="text-2xl font-semibold mb-2">Let's add some questions to your applications</h2>
               <p className="text-gray-600 mb-4">Click the button below to get your survey up and running.</p>
-              <Button onClick={() => setIsModalOpen(true)}>Add a question</Button>
+              <Button onClick={() => setIsAddModalOpen(true)}>Add a question</Button>
             </div>
         ) : (
             <>
@@ -91,24 +96,38 @@ const EditApplicationQuestions: React.FC = () => {
                           number={index + 1}
                           title={question.text}
                           type={question.type}
-                          onEdit={() => handleEditQuestion(question.id)}
+                          onEdit={() => {
+                            setEditingQuestion(question);
+                            setIsEditModalOpen(true);
+                          }}
                           onDelete={() => handleDeleteQuestion(question.id)}
                       />
                   ))}
                 </SortableContext>
               </DndContext>
               <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 text-center">
-                <Button variant="outline" onClick={() => setIsModalOpen(true)}>
+                <Button variant="outline" onClick={() => setIsAddModalOpen(true)}>
                   Add another question
                 </Button>
               </div>
             </>
         )}
         <AddQuestionModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            isOpen={isAddModalOpen}
+            onClose={() => setIsAddModalOpen(false)}
             onAddQuestion={handleAddQuestion}
         />
+        {editingQuestion && (
+            <EditQuestionModal
+                isOpen={isEditModalOpen}
+                onClose={() => {
+                  setIsEditModalOpen(false);
+                  setEditingQuestion(null);
+                }}
+                onEditQuestion={handleEditQuestion}
+                question={editingQuestion}
+            />
+        )}
       </div>
   );
 };
